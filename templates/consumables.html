@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Consumables</title>
+  </head>
+  <body>
+    <h1>Choose Your Snacks</h1>
+    <form method="POST">
+      <table border="1">
+        <thead>
+          <tr>
+            {% for column in columns %}
+            <th>{{ column }}</th>
+            {% endfor %}
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in rows %}
+          <tr>
+            {% for value in row %}
+            <td>{{ value }}</td>
+            {% endfor %}
+            <td>
+              <input
+                type="number"
+                name="consumable_quantity"
+                min="0"
+                max="10"
+                value="0"
+              />
+              <input
+                type="hidden"
+                name="consumable_name"
+                value="{{ row[0] }}"
+              />
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <a
+        href="{{ url_for('customer_info', showtime_id=showtime_id, movie_title=movie_title) }}"
+      >
+        <button type="button">Back</button>
+      </a>
+      <button type="submit">Next</button>
+    </form>
+  </body>
+</html>

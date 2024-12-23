@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Customer Info</title>
+  </head>
+  <body>
+    <h1>Enter Your Information</h1>
+    <form method="POST">
+      <label for="first_name">First Name:</label><br />
+      <input
+        type="text"
+        id="first_name"
+        name="first_name"
+        required
+      /><br /><br />
+
+      <label for="surname">Surname:</label><br />
+      <input type="text" id="surname" name="surname" required /><br /><br />
+
+      <label for="email">Email:</label><br />
+      <input type="email" id="email" name="email" required /><br /><br />
+
+      <label for="phone">Phone:</label><br />
+      <input type="text" id="phone" name="phone" required /><br /><br />
+
+      <a href="{{ url_for('showtimes', movie_title=movie_title) }}">
+        <button type="button">Back</button>
+      </a>
+      <button type="submit">Next</button>
+    </form>
+  </body>
+</html>

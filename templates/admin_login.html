@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Admin Login</title>
+  </head>
+  <body>
+    <h1>Admin Login</h1>
+    <form method="POST">
+      <label>Username:</label><br />
+      <input type="text" name="username" required /><br /><br />
+      <label>Password:</label><br />
+      <input type="password" name="password" required /><br /><br />
+      {% if error %}
+      <p style="color: red">{{ error }}</p>
+      {% endif %}
+      <button type="submit">Login</button>
+    </form>
+  </body>
+</html>

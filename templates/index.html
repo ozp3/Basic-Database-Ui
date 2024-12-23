@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Welcome to Movie Theatre</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+      }
+      a {
+        text-decoration: none;
+        color: #007bff;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+      button {
+        font-size: 16px;
+        padding: 10px 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        cursor: pointer;
+        margin: 10px 0;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      /* Admin Paneli Butonu Stili */
+      .admin-button {
+        font-size: 12px;
+        color: gray;
+        background: none;
+        border: none;
+        cursor: pointer;
+        text-decoration: underline;
+        margin-top: 20px;
+      }
+      .admin-button:hover {
+        color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Welcome to Movie Theatre</h1>
+    <p>Explore our movie theatre platform and enjoy your favorite films!</p>
+    <a href="{{ url_for('movies') }}">
+      <button type="button">Movies</button>
+    </a>
+    <form
+      action="{{ url_for('admin_login') }}"
+      method="get"
+      style="text-align: right"
+    >
+      <button class="admin-button" type="submit">Admin Panel</button>
+    </form>
+  </body>
+</html>

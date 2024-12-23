@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Add Data to {{ table_name }}</title>
+  </head>
+  <body>
+    <h1>Add Data to {{ table_name }}</h1>
+    <form method="POST">
+      {% for column in columns %}
+      <label
+        >{{ column }} {% if constraints[column] == 'N' %}(NOT NULL){% endif
+        %}:</label
+      ><br />
+      <input type="text" name="{{ column }}" {% if constraints[column] == 'N'
+      %}required{% endif %}><br /><br />
+      {% endfor %}
+      <button type="submit">Add</button>
+    </form>
+    {% if message %}
+    <p style="color: green">{{ message }}</p>
+    {% endif %}
+    <h2>Existing Data</h2>
+    <table border="1">
+      <thead>
+        <tr>
+          {% for column in columns %}
+          <th>{{ column }}</th>
+          {% endfor %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for row in rows %}
+        <tr>
+          {% for value in row %}
+          <td>{{ value }}</td>
+          {% endfor %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <br />
+    <a href="{{ url_for('admin_dashboard') }}">
+      <button type="button">Back to Dashboard</button>
+    </a>
+  </body>
+</html>

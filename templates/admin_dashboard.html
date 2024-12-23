@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Admin Dashboard</title>
+  </head>
+  <body>
+    <h1>Admin Dashboard</h1>
+    <ul>
+      {% for table in tables %}
+      <li>
+        {{ table }} - <a href="/admin/table/{{ table }}/add">Add Data</a> |
+        <a href="/admin/table/{{ table }}/remove">Remove Data</a>
+      </li>
+      {% endfor %}
+    </ul>
+    <a href="/">Back to Home</a>
+  </body>
+</html>

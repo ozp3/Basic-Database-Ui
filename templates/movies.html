@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Movies</title>
+  </head>
+  <body>
+    <h1>Movies</h1>
+    <form method="POST">
+      <table border="1">
+        <thead>
+          <tr>
+            {% for column in columns %}
+            <th>{{ column }}</th>
+            {% endfor %}
+            <th>Select</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for row in rows %}
+          <tr>
+            {% for value in row %}
+            <td>{{ value }}</td>
+            {% endfor %}
+            <td>
+              <input
+                type="radio"
+                name="selected_movie"
+                value="{{ row[0] }}"
+                required
+              />
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <a href="/">
+        <button type="button">Back</button>
+      </a>
+      <button type="submit">Next</button>
+    </form>
+  </body>
+</html>

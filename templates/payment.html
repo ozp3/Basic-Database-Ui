@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Payment Summary</title>
+  </head>
+  <body>
+    <h1>Payment Summary</h1>
+
+    <h2>Showtime Details</h2>
+    <table border="1">
+      <tr>
+        <th>Movie</th>
+        <th>SHOWDATE</th>
+        <th>STARTTIME</th>
+        <th>ENDTIME</th>
+        <th>HALLID</th>
+      </tr>
+      <tr>
+        <td>{{ movie_title }}</td>
+        <td>{{ showtime_table.SHOWDATE }}</td>
+        <td>{{ showtime_table.STARTTIME }}</td>
+        <td>{{ showtime_table.ENDTIME }}</td>
+        <td>{{ showtime_table.HALLID }}</td>
+      </tr>
+    </table>
+
+    <p><strong>Ticket Price:</strong> ${{ "%.2f"|format(ticket_price) }}</p>
+
+    <h2>Consumables</h2>
+    {% if consumables %}
+    <ul>
+      {% for consumable, quantity, total in consumables %}
+      <li>{{ consumable }} (x{{ quantity }}) - ${{ "%.2f"|format(total) }}</li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>No consumables selected.</p>
+    {% endif %}
+
+    <p>
+      <strong>Total Consumables Price:</strong> ${{
+      "%.2f"|format(total_consumable_price) }}
+    </p>
+    <hr />
+    <p><strong>Total Price:</strong> ${{ "%.2f"|format(total_price) }}</p>
+
+    <form method="POST">
+      <button type="submit">Complete Order</button>
+    </form>
+    <a
+      href="{{ url_for('consumables', showtime_id=','.join([showtime_table.SHOWDATE, showtime_table.STARTTIME, showtime_table.ENDTIME, showtime_table.HALLID]), movie_title=movie_title) }}"
+    >
+      <button type="button">Back</button>
+    </a>
+  </body>
+</html>
