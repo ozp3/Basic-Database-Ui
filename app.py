@@ -125,15 +125,44 @@ def admin_dashboard():
 
 @app.route("/admin/table/<table_name>/add", methods=["GET", "POST"])
 def add_data(table_name):
-    if not session.get('admin'):
+    if not session.get("admin"):
         return redirect(url_for("admin_login"))
+
+    # Mevcut tablo verilerini ve sütunları al
     columns, rows = fetch_table_data(table_name)
     constraints = fetch_column_constraints(table_name)
+
     if request.method == "POST":
+        # Formdan gelen veriler
         data = [request.form.get(col) for col in columns]
-        insert_into_table(table_name, data)
+        
+        # Eksik sütunlar için kontrol
+        missing_columns = [col for col in columns if constraints[col] == "N" and not request.form.get(col)]
+        if missing_columns:
+            return render_template(
+                "add_data.html",
+                table_name=table_name,
+                columns=columns,
+                rows=rows,
+                constraints=constraints,
+                message=f"Error: Missing values for columns: {', '.join(missing_columns)}"
+            )
+        
+        # Veritabanına ekleme
+        try:
+            insert_into_table(table_name, data)
+        except Exception as e:
+            return render_template(
+                "add_data.html",
+                table_name=table_name,
+                columns=columns,
+                rows=rows,
+                constraints=constraints,
+                message=f"Error: {str(e)}"
+            )
+
+        # Tabloyu güncelleyip başarılı mesajı göster
         columns, rows = fetch_table_data(table_name)
-        constraints = fetch_column_constraints(table_name)
         return render_template(
             "add_data.html",
             table_name=table_name,
@@ -142,23 +171,45 @@ def add_data(table_name):
             constraints=constraints,
             message="Data added successfully!"
         )
-    return render_template(
-        "add_data.html",
-        table_name=table_name,
-        columns=columns,
-        rows=rows,
-        constraints=constraints
-    )
+
+    return render_template("add_data.html", table_name=table_name, columns=columns, rows=rows, constraints=constraints)
+
 
 @app.route("/admin/table/<table_name>/remove", methods=["GET", "POST"])
 def remove_data(table_name):
-    if not session.get('admin'):
+    if not session.get("admin"):
         return redirect(url_for("admin_login"))
+
+    # Tabloyu ve sütunları al
     columns, rows = fetch_table_data(table_name)
+
     if request.method == "POST":
+        # Formdan gelen silme koşulu
         condition_column = request.form.get("condition_column")
         condition_value = request.form.get("condition_value")
-        delete_from_table(table_name, condition_column, condition_value)
+
+        if not condition_column or not condition_value:
+            return render_template(
+                "remove_data.html",
+                table_name=table_name,
+                columns=columns,
+                rows=rows,
+                message="Error: Please provide both column and value for deletion."
+            )
+
+        # Veritabanından silme işlemi
+        try:
+            delete_from_table(table_name, condition_column, condition_value)
+        except Exception as e:
+            return render_template(
+                "remove_data.html",
+                table_name=table_name,
+                columns=columns,
+                rows=rows,
+                message=f"Error: {str(e)}"
+            )
+
+        # Tabloyu güncelleyip başarılı mesajı göster
         columns, rows = fetch_table_data(table_name)
         return render_template(
             "remove_data.html",
@@ -167,7 +218,9 @@ def remove_data(table_name):
             rows=rows,
             message="Data removed successfully!"
         )
+
     return render_template("remove_data.html", table_name=table_name, columns=columns, rows=rows)
+
 
 # --------------------------------------------------------------------------------
 # 5. Movies, Showtimes, Customer Info, Consumables rotaları
